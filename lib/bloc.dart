@@ -1,19 +1,21 @@
 import 'package:rxdart/rxdart.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'repository.dart';
 
 class Bloc {
 
-  int counter = 0;
+  final _repository = Repository();
 
 
-  final _counterController = BehaviorSubject<int>();
+  final _firestoreDataSubject = BehaviorSubject<QuerySnapshot>();
 
-  Function(int) get changeCounter => _counterController.sink.add;
+  Stream<QuerySnapshot> nameList() {
+    return _repository.nameList();
+  }
 
-  Observable<int> get counterValue => _counterController.stream;
-
-  void increment() { changeCounter(++counter); }
 
   void dispose() {
-    _counterController?.close();
+    _firestoreDataSubject?.close();
   }
 }
