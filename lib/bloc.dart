@@ -1,6 +1,7 @@
 import 'package:rxdart/rxdart.dart';
+import 'bloc_interface.dart';
 
-class Bloc {
+class Bloc extends BlocInterface {
 
   int counter = 0;
 

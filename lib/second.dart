@@ -1,28 +1,30 @@
 import 'package:flutter/material.dart';
 import 'provider.dart';
 import 'bloc.dart';
+import 'third.dart';
 
-class NextHomePage extends StatefulWidget {
-  NextHomePage({Key key, this.title}) : super(key: key);
+class SecondHomePage extends StatefulWidget {
+  SecondHomePage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _NextHomePageState createState() => _NextHomePageState();
+  _SecondHomePageState createState() => _SecondHomePageState();
 }
 
-class _NextHomePageState extends State<NextHomePage> {
+class _SecondHomePageState extends State<SecondHomePage> {
   
   Bloc _bloc;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _bloc = Provider.of(context);
+    _bloc = BlocProvider.of<Bloc>(context);
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -44,7 +46,16 @@ class _NextHomePageState extends State<NextHomePage> {
                 );
               },
             ),
-            FlatButton(child: Text("data"),onPressed: (){Navigator.pushNamed(context, '/');},),
+            FlatButton(
+              child: Text("data"),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            ThirdHomePage(title: "Third",)));
+              },
+            )
             
           ],
         ),
@@ -57,9 +68,4 @@ class _NextHomePageState extends State<NextHomePage> {
     );
   }
 
-  @override
-  void dispose() {
-    //_bloc.dispose();
-    super.dispose();
-  }
 }

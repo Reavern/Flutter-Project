@@ -1,17 +1,37 @@
-import 'package:flutter/material.dart';
-import 'bloc.dart';
+import 'package:flutter/widgets.dart';
+import 'bloc_interface.dart';
 
-class Provider extends InheritedWidget {
-  final bloc = Bloc();
+class BlocProvider<T extends BlocInterface> extends StatefulWidget {
+  final T bloc;
+  final Widget child;
 
-  Provider({Key key, Widget child})
-  : super(key: key, child: child);
+  BlocProvider({Key key, @required this.child, @required this.bloc})
+      : super(key: key);
+
+  @override
+  _BlocProviderState<T> createState() => _BlocProviderState<T>();
+
+  static Type _typeOf<T>() => T;
 
   @override
   bool updateShouldNotify(_) => true;
 
-  static Bloc of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(Provider) as Provider).bloc;
+  static T of<T extends BlocInterface>(BuildContext context) {
+    final type = _typeOf<BlocProvider<T>>();
+    BlocProvider<T> provider = context.ancestorWidgetOfExactType(type);
+    return provider.bloc;
+  }
+}
+
+class _BlocProviderState<T> extends State<BlocProvider<BlocInterface>> {
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
   }
 
+  @override
+  void dispose() {
+    widget.bloc.dispose();
+    super.dispose();
+  }
 }
